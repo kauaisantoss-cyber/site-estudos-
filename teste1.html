@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudos Acessíveis</title>
+
+<style>
+:root {
+  --bg: #f6f3ff;
+  --text: #2a2438;
+  --primary: #6c3bff;
+  --secondary: #a78bfa;
+  --card: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
+
+/* MODOS */
+.dark { --bg:#1a1625; --text:#eee; --card:#2a2438; }
+.contrast { --bg:#000; --text:#fff; --card:#111; }
+.dyslexia { font-family: Arial, sans-serif; }
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #6c3bff, #a78bfa);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+/* BOTÕES */
+.controls button {
+  margin: 5px;
+  border: none;
+  border-radius: 20px;
+  background: white;
+  color: #6c3bff;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.controls button:hover {
+  opacity: 0.85;
+}
+
+/* NAV */
+nav {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+nav a {
+  margin: 0 10px;
+  color: var(--primary);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 1rem;
+}
+
+/* CARDS */
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* BOTÃO AÇÃO */
+.action {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* PROGRESSO */
+progress {
+  width: 100%;
+  height: 20px;
+}
+
+/* SKIP */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  background: black;
+  color: white;
+  padding: 8px;
+}
+.skip-link:focus { top: 0; }
+
+button:focus, a:focus {
+  outline: 3px solid orange;
+}
+</style>
+</head>
+
+<body>
+
+<a href="#main" class="skip-link">Pular para conteúdo</a>
+
+<header>
+  <h1>💜 Plataforma de Estudos</h1>
+
+  <div class="controls">
+    <button onclick="toggle('dark')">🌙</button>
+    <button onclick="toggle('contrast')">⚡</button>
+    <button onclick="toggle('dyslexia')">🔤</button>
+    <button onclick="changeFont(1)">A+</button>
+    <button onclick="changeFont(-1)">A-</button>
+  </div>
+</header>
+
+<nav>
+  <a href="#aulas">Aulas</a>
+  <a href="#progresso">Progresso</a>
+</nav>
+
+<main id="main" class="container">
+
+<section id="aulas">
+  <h2>Aulas</h2>
+
+  <div class="card">
+    <h3 id="aula1">Introdução ao HTML</h3>
+    <p>Aprenda HTML de forma simples e prática.</p>
+
+    <button class="action" onclick="lerTexto('aula1')">
+      🔊 Ouvir
+    </button>
+
+    <video controls width="100%" style="margin-top:10px; border-radius:10px;">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <p><a href="#">📄 Transcrição</a></p>
+  </div>
+
+</section>
+
+<section id="progresso">
+  <h2>Seu progresso</h2>
+  <p>3 de 10 aulas concluídas</p>
+  <progress value="3" max="10"></progress>
+</section>
+
+</main>
+
+<footer class="container">
+  <p>© 2026 💜</p>
+</footer>
+
+<script>
+function toggle(c) {
+  document.body.classList.toggle(c);
+}
+
+let size = 16;
+function changeFont(s) {
+  size += s;
+  document.body.style.fontSize = size + "px";
+}
+
+function lerTexto(id) {
+  const texto = document.getElementById(id).innerText;
+  const fala = new SpeechSynthesisUtterance(texto);
+  fala.lang = "pt-BR";
+  speechSynthesis.speak(fala);
+}
+</script>
+
+</body>
+</html>

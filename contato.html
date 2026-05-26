@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contato - Infinity Academy</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* 🔥 NAVBAR IGUAL AO OUTRO SITE */
+.navbar {
+    width: 100%;
+    background: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #662eb1;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    position: relative;
+    transition: 0.3s;
+}
+
+.menu a::after {
+    content: "";
+    width: 0%;
+    height: 2px;
+    background: #662eb1;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    color: #662eb1;
+}
+
+.menu a:hover::after {
+    width: 100%;
+}
+
+.login-btn {
+    margin-left: 30px;
+    padding: 8px 18px;
+    background: #662eb1;
+    color: white !important;
+    border-radius: 20px;
+}
+
+.login-btn:hover {
+    background: #4a1f85;
+}
+
+/* RESTO DO SEU SITE */
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #662eb1, #4d4d4d);
+}
+
+.main {
+    padding-top: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app {
+    width: 95%;
+    max-width: 1100px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    padding: 50px;
+    text-align: center;
+}
+
+.header h1 { font-size: 36px; color: white; }
+
+.header p {
+    font-size: 18px;
+    color: #eee;
+    margin-top: 10px;
+}
+
+.cards {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    background: rgba(255,255,255,0.25);
+}
+
+.icon i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.extra {
+    margin-top: 60px;
+    color: white;
+}
+
+.info-box {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.info-box div {
+    background: rgba(255,255,255,0.15);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.footer {
+    margin-top: 40px;
+    font-size: 12px;
+    color: #ddd;
+}
+
+@media (max-width: 768px) {
+    .cards, .info-box { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 NAVBAR IGUAL À PRINCIPAL -->
+<div class="navbar">
+    <div class="logo">📚 Infinity Academy</div>
+    <div class="menu">
+        <a href="inicio.html">Início</a>
+        <a href="avisos.html">Avisos</a>
+        <a href="prof.html">Professores</a>
+        <a href="contato.html">Contato</a>
+        <a href="index1.html" class="login-btn">Login</a>
+    </div>
+</div>
+
+<div class="main">
+    <div class="app">
+
+        <div class="header">
+            <h1>Contato</h1>
+            <p>Entre em contato de forma rápida e escolha a melhor opção para você</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-envelope" style="color:#4facfe;"></i>
+                </div>
+                <h2>Email</h2>
+                <p>contato@infinityacademy.com</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <i class="fab fa-whatsapp" style="color:#25D366;"></i>
+                </div>
+                <h2>WhatsApp</h2>
+                <p>(21) 98147-8482</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">
+                    <i class="fab fa-instagram" 
+                       style="background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7);
+                              -webkit-background-clip:text;
+                              -webkit-text-fill-color:transparent;">
+                    </i>
+                </div>
+                <h2>Instagram</h2>
+                <p>@infinityacademy</p>
+            </div>
+
+        </div>
+
+        <div class="extra">
+
+            <h2>
+                <i class="fas fa-lightbulb" style="color:#ffd43b;"></i>
+                Precisa de ajuda?
+            </h2>
+
+            <p>Estamos prontos para te ajudar a organizar seus estudos e melhorar seu desempenho.</p>
+
+            <div class="info-box">
+                <div>
+                    <h3><i class="fas fa-clock"></i> Horário</h3>
+                    <p>Seg a Sex - 08h às 18h</p>
+                </div>
+
+                <div>
+                    <h3><i class="fas fa-bolt"></i> Resposta</h3>
+                    <p>Retorno em até 24h</p>
+                </div>
+
+                <div>
+                    <h3><i class="fas fa-bullseye"></i> Suporte</h3>
+                    <p>Especialistas em estudos</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            © 2026 Infinity Academy
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

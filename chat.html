@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity Academy</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: white;
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background: #020617;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #1e293b;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sidebar button:hover {
+    background: #3b82f6;
+}
+
+/* BOTÃO SAIR */
+.logout {
+    margin-top: auto;
+    background: #ef4444;
+}
+
+.logout:hover {
+    background: #dc2626;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* SEARCH */
+#search {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #1e293b;
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* CHAT */
+.chat {
+    background: #020617;
+    border-radius: 15px;
+    padding: 20px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+/* MENSAGENS */
+.msg {
+    margin: 10px 0;
+    animation: fadeIn 0.3s ease;
+}
+
+.user {
+    text-align: right;
+}
+
+.user span {
+    background: #3b82f6;
+    padding: 10px 15px;
+    border-radius: 12px;
+}
+
+.bot span {
+    background: #334155;
+    padding: 10px 15px;
+    border-radius: 12px;
+}
+
+/* PERGUNTAS */
+.questions button {
+    padding: 10px;
+    margin: 5px;
+    background: #1e293b;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.questions button:hover {
+    background: #3b82f6;
+    transform: scale(1.05);
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(5px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Infinity IA</h2>
+    <button onclick="carregar('basico')">Básico</button>
+    <button onclick="carregar('intermediario')">Intermediário</button>
+    <button onclick="carregar('avancado')">Avançado</button>
+    <button onclick="carregar('pratica')">Prática</button>
+
+    <!-- BOTÃO SAIR -->
+    <button class="logout" onclick="sair()">Sair</button>
+</div>
+
+<div class="main">
+
+    <input id="search" placeholder="🔍 Buscar pergunta..." onkeyup="buscar()">
+
+    <div class="chat" id="chat">
+        <div class="msg bot"><span>Escolha uma categoria 👈</span></div>
+    </div>
+
+    <div class="questions" id="questions"></div>
+
+</div>
+
+<script>
+let perguntasAtuais = [];
+
+/* DADOS */
+function carregar(tipo) {
+    if(tipo === "basico") {
+        perguntasAtuais = [
+            ["O que é HTML?", "HTML estrutura o site usando tags."],
+            ["O que é CSS?", "CSS estiliza o site (cores, layout)."]
+        ];
+    }
+
+    if(tipo === "intermediario") {
+        perguntasAtuais = [
+            ["O que é Flexbox?", "Sistema moderno de layout."],
+            ["Como centralizar?", "Use display:flex + justify-content + align-items."]
+        ];
+    }
+
+    if(tipo === "avancado") {
+        perguntasAtuais = [
+            ["O que é JS?", "Linguagem que dá interatividade."],
+            ["O que é API?", "Permite comunicação entre sistemas."]
+        ];
+    }
+
+    if(tipo === "pratica") {
+        perguntasAtuais = [
+            ["Meu CSS não funciona", "Verifique o link no HTML."],
+            ["Como deixar bonito?", "Use espaçamento e cores consistentes."]
+        ];
+    }
+
+    mostrarPerguntas(perguntasAtuais);
+}
+
+/* MOSTRAR */
+function mostrarPerguntas(lista) {
+    let div = document.getElementById("questions");
+    div.innerHTML = "";
+
+    lista.forEach(p => {
+        let btn = document.createElement("button");
+        btn.innerText = p[0];
+        btn.onclick = () => responder(p[0], p[1]);
+        div.appendChild(btn);
+    });
+}
+
+/* RESPONDER */
+function responder(pergunta, resposta) {
+    let chat = document.getElementById("chat");
+
+    chat.innerHTML += `<div class="msg user"><span>${pergunta}</span></div>`;
+
+    let thinking = document.createElement("div");
+    thinking.className = "msg bot";
+    thinking.innerHTML = "<span>🤖 Pensando...</span>";
+    chat.appendChild(thinking);
+
+    chat.scrollTop = chat.scrollHeight;
+
+    setTimeout(() => {
+        typingEffect(thinking, resposta);
+    }, 800);
+}
+
+/* DIGITAÇÃO */
+function typingEffect(element, text) {
+    let i = 0;
+    element.innerHTML = "<span></span>";
+    let span = element.querySelector("span");
+
+    let interval = setInterval(() => {
+        span.innerHTML += text[i];
+        i++;
+        if(i >= text.length) clearInterval(interval);
+    }, 20);
+}
+
+/* BUSCA */
+function buscar() {
+    let termo = document.getElementById("search").value.toLowerCase();
+
+    let filtradas = perguntasAtuais.filter(p =>
+        p[0].toLowerCase().includes(termo)
+    );
+
+    mostrarPerguntas(filtradas);
+}
+
+/* SAIR */
+function sair() {
+    window.location.href = "inicio.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="height:100%; background: linear-gradient(135deg, #662eb1, #000);">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Infinity Academy</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* FUNDO */
+ body {
+    min-height:100vh;
+    background: linear-gradient(135deg, #662eb1, #000);
+    color:white;
+    background-attachment: fixed;
+}
+
+/* 🔥 NAVBAR NOVA (IGUAL DO SITE) */
+.navbar {
+    width: 100%;
+    background: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #662eb1;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    position: relative;
+    transition: 0.3s;
+}
+
+.menu a::after {
+    content: "";
+    width: 0%;
+    height: 2px;
+    background: #662eb1;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    color: #662eb1;
+}
+
+.menu a:hover::after {
+    width: 100%;
+}
+
+.login-btn {
+    margin-left: 30px;
+    padding: 8px 18px;
+    background: #662eb1;
+    color: white !important;
+    border-radius: 20px;
+}
+
+.login-btn:hover {
+    background: #4a1f85;
+}
+
+/* 🔐 LOGIN */
+.login-container {
+    max-width: 400px;
+    margin: 80px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    background: #662eb1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-container button:hover {
+    background: #4a1f85;
+}
+
+.tipo-select {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+
+.tipo-select button {
+    width: 48%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: #eee;
+    transition: 0.3s;
+}
+
+.tipo-select button.active {
+    background: #662eb1;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 NAVBAR (AGORA NO LUGAR CERTO) -->
+<div class="navbar">
+    <div class="logo">📚 Infinity Academy</div>
+    <div class="menu">
+        <a href="inicio.html">Início</a>
+        <a href="avisos.html">Avisos</a>
+        <a href="prof.html">Professores</a>
+        <a href="contato.html">Contato</a>
+        <a href="index1.html" class="login-btn">Login</a>
+    </div>
+</div>
+
+<!-- 🔥 WRAPPER PARA CENTRALIZAR -->
+<div style="display:flex; justify-content:center; align-items:center; min-height:calc(100vh - 80px);">
+
+    <!-- 🔐 LOGIN -->
+    <div class="login-container">
+        <h2>Entrar na conta</h2>
+
+        <div class="tipo-select">
+            <button id="alunoBtn" class="active" onclick="setTipo('aluno')">Aluno</button>
+            <button id="profBtn" onclick="setTipo('professor')">Professor</button>
+        </div>
+
+        <input type="text" placeholder="Usuário">
+        <input type="password" placeholder="Senha">
+
+        <button onclick="login()">Entrar</button>
+    </div>
+
+</div>
+
+<script>
+let tipo = "aluno";
+
+function setTipo(t){
+    tipo = t;
+
+    document.getElementById("alunoBtn").classList.remove("active");
+    document.getElementById("profBtn").classList.remove("active");
+
+    if(t === "aluno"){
+        document.getElementById("alunoBtn").classList.add("active");
+    } else {
+        document.getElementById("profBtn").classList.add("active");
+    }
+}
+
+function login(){
+    localStorage.setItem("tipo", tipo);
+    window.location.href = "painel.html";
+}
+</script>
+
+</body>
+</html>

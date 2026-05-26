@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Painel Premium - Infinity Academy</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #662eb1, #000);
+    color:white;
+    min-height:100vh;
+}
+
+/* NAVBAR */
+.navbar {
+    background:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo {
+    color:#662eb1;
+    font-weight:600;
+    font-size:20px;
+}
+
+.nav-right {
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.user {
+    background:#662eb1;
+    color:white;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:14px;
+}
+
+/* BOTÃO VOLTAR */
+.back-btn {
+    text-decoration:none;
+    color:#662eb1;
+    font-weight:500;
+}
+
+.back-btn:hover {
+    text-decoration:underline;
+}
+
+/* BOTÃO SAIR */
+.logout-btn {
+    background:#ff4d4d;
+    color:white;
+    padding:8px 15px;
+    border-radius:20px;
+    cursor:pointer;
+    border:none;
+    transition:0.3s;
+}
+
+.logout-btn:hover {
+    background:#cc0000;
+    transform:scale(1.05);
+}
+
+/* CONTAINER */
+.container {
+    max-width:950px;
+    margin:30px auto;
+}
+
+/* CARD */
+.card {
+    background:white;
+    color:black;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+/* INPUT */
+input, textarea, select {
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-top:10px;
+}
+
+/* BOTÕES */
+.btn {
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.btn-primary { background:#662eb1; color:white; }
+.btn-edit { background:#4facfe; color:white; }
+.btn-danger { background:red; color:white; }
+
+/* AVISOS */
+.aviso {
+    background:#f5f5ff;
+    padding:15px;
+    border-radius:10px;
+    margin-top:10px;
+    border-left:5px solid #662eb1;
+}
+
+.aviso.urgente { border-left:5px solid red; }
+.aviso.tarefa { border-left:5px solid #4facfe; }
+.aviso.prova { border-left:5px solid orange; }
+
+.badge {
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:10px;
+    font-size:12px;
+    color:white;
+    margin-top:5px;
+}
+
+.badge.prova { background:orange; }
+.badge.tarefa { background:#4facfe; }
+.badge.urgente { background:red; }
+
+.highlight {
+    background:#fff3cd;
+}
+
+/* RESPONSIVO */
+@media(max-width:700px){
+    .container { padding:10px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">📢 Avisos</div>
+
+    <div class="nav-right">
+        <a href="inicio.html" class="back-btn">⬅ Voltar</a>
+        <div class="user">👨‍🏫 Professor</div>
+        <button class="logout-btn" onclick="logout()">Sair</button>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- FORM -->
+<div class="card">
+<h3>Criar / Editar Aviso</h3>
+
+<input type="text" id="professor" placeholder="Nome do professor">
+<input type="text" id="titulo" placeholder="Título">
+
+<select id="categoria">
+    <option value="tarefa">Tarefa</option>
+    <option value="prova">Prova</option>
+    <option value="urgente">Urgente</option>
+</select>
+
+<textarea id="texto" placeholder="Digite o aviso"></textarea>
+
+<label>
+<input type="checkbox" id="destaque"> Destacar aviso ⭐
+</label>
+
+<button class="btn btn-primary" onclick="salvar()">Salvar</button>
+</div>
+
+<!-- LISTA -->
+<div class="card">
+<h3>📌 Avisos</h3>
+<div id="lista"></div>
+</div>
+
+</div>
+
+<script>
+
+/* 🔐 SENHA */
+let senha = prompt("Senha do professor:");
+
+if(senha !== "1234"){
+    alert("Acesso negado");
+    window.location.href = "login.html";
+}
+
+/* DADOS */
+let avisos = JSON.parse(localStorage.getItem("avisos")) || [];
+let editIndex = null;
+
+/* DATA */
+function formatarData(){
+    return new Date().toLocaleString("pt-BR");
+}
+
+/* RENDER */
+function render(){
+    let lista = document.getElementById("lista");
+    lista.innerHTML="";
+
+    avisos.slice().reverse().forEach((a,i)=>{
+        let indexReal = avisos.length - 1 - i;
+
+        let div = document.createElement("div");
+        div.className = `aviso ${a.categoria} ${a.destaque ? "highlight" : ""}`;
+
+        div.innerHTML = `
+            <strong>${a.titulo}</strong>
+            <p>${a.texto}</p>
+
+            <span class="badge ${a.categoria}">${a.categoria}</span>
+
+            <p><small>👨‍🏫 ${a.professor} • ${a.data}</small></p>
+
+            <button class="btn btn-edit" onclick="editar(${indexReal})">Editar</button>
+            <button class="btn btn-danger" onclick="excluir(${indexReal})">Excluir</button>
+        `;
+
+        lista.appendChild(div);
+    });
+}
+
+/* SALVAR */
+function salvar(){
+    let professor = document.getElementById("professor").value;
+    let titulo = document.getElementById("titulo").value;
+    let categoria = document.getElementById("categoria").value;
+    let texto = document.getElementById("texto").value;
+    let destaque = document.getElementById("destaque").checked;
+
+    if(!professor || !titulo || !texto){
+        alert("Preencha tudo");
+        return;
+    }
+
+    let novo = {
+        professor,
+        titulo,
+        categoria,
+        texto,
+        destaque,
+        data: formatarData()
+    };
+
+    if(editIndex !== null){
+        avisos[editIndex] = novo;
+        editIndex = null;
+    } else {
+        avisos.push(novo);
+    }
+
+    localStorage.setItem("avisos", JSON.stringify(avisos));
+
+    document.getElementById("professor").value="";
+    document.getElementById("titulo").value="";
+    document.getElementById("texto").value="";
+    document.getElementById("destaque").checked=false;
+
+    render();
+}
+
+/* EDITAR */
+function editar(i){
+    let a = avisos[i];
+
+    document.getElementById("professor").value = a.professor;
+    document.getElementById("titulo").value = a.titulo;
+    document.getElementById("categoria").value = a.categoria;
+    document.getElementById("texto").value = a.texto;
+    document.getElementById("destaque").checked = a.destaque;
+
+    editIndex = i;
+}
+
+/* EXCLUIR */
+function excluir(i){
+    avisos.splice(i,1);
+    localStorage.setItem("avisos", JSON.stringify(avisos));
+    render();
+}
+
+/* LOGOUT */
+function logout(){
+    localStorage.clear();
+    alert("Você saiu da conta");
+    window.location.href = "login.html";
+}
+
+render();
+</script>
+
+</body>
+</html>

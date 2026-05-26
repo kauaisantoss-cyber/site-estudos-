@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="height:100%; background: linear-gradient(135deg, #662eb1, #000);">
+<head>
+<meta charset="UTF-8">
+<title>Painel Escolar</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #5f2c82, #49a09d);
+    color:white;
+}
+
+/* NAVBAR */
+.navbar {
+    background: rgba(255,255,255,0.95);
+    padding: 15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.logo {
+    color:#5f2c82;
+    font-size:22px;
+    font-weight:600;
+}
+
+.menu a {
+    text-decoration:none;
+    color:#555;
+    margin-left:20px;
+    transition:0.3s;
+}
+
+.menu a:hover {
+    color:#5f2c82;
+}
+
+.login-btn {
+    background:#5f2c82;
+    color:white !important;
+    padding:6px 15px;
+    border-radius:20px;
+}
+
+/* CALENDÁRIO */
+.calendar {
+    max-width:700px;
+    margin:30px auto;
+    background:rgba(255,255,255,0.95);
+    color:black;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.calendar header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.calendar button {
+    background:#5f2c82;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.days {
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.day {
+    padding:12px;
+    background:#f2f2f2;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.day:hover {
+    transform:scale(1.05);
+    background:#e0e0ff;
+}
+
+.day.has-event {
+    background:#c7d2ff;
+}
+
+/* MODAL */
+.modal {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content {
+    background:white;
+    color:black;
+    padding:25px;
+    border-radius:15px;
+    width:320px;
+    animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+    from {transform:scale(0.8);opacity:0;}
+    to {transform:scale(1);opacity:1;}
+}
+
+.modal-content input,
+.modal-content select {
+    width:100%;
+    padding:8px;
+    margin-top:8px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.modal-content button {
+    margin-top:10px;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#5f2c82;
+    color:white;
+    cursor:pointer;
+}
+
+/* PAINEL */
+.painel {
+    max-width:1000px;
+    margin:40px auto;
+}
+
+.cards {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.card {
+    background:white;
+    color:black;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+
+.card:hover {
+    transform:translateY(-5px);
+}
+
+.lista {
+    margin-top:20px;
+}
+
+.item {
+    background:white;
+    color:black;
+    padding:12px;
+    margin:8px 0;
+    border-radius:10px;
+    box-shadow:0 5px 10px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body style="min-height:100%; background: transparent;">
+
+<div class="navbar">
+    <div class="logo">📚 Infinity Academy</div>
+    <div class="menu">
+        <a href="inicio.html">Início</a>
+        <a href="avisos.html">Avisos</a>
+        <a href="contato.html">Contato</a>
+        <a href="index1.html" class="login-btn">Login</a>
+    </div>
+</div>
+
+<h1 style="text-align:center;margin-top:20px;">📅 Calendário Escolar</h1>
+
+<div class="calendar">
+    <header>
+        <button onclick="prevMonth()">⬅</button>
+        <h2 id="monthYear"></h2>
+        <button onclick="nextMonth()">➡</button>
+    </header>
+
+    <div class="days" id="calendarDays"></div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3 id="modalDate"></h3>
+        <p id="modalInfo"></p>
+        <button onclick="fecharModal()">Fechar</button>
+    </div>
+</div>
+
+<div class="modal" id="modalForm">
+    <div class="modal-content">
+        <h3 style="text-align:center;">📘 Nova Aula</h3>
+
+        <label>Curso</label>
+        <select id="curso">
+            <option>Web Design</option>
+            <option>Logística</option>
+            <option>Contabilidade</option>
+            <option>Administração</option>
+        </select>
+
+        <label>Professor</label>
+        <select id="professor">
+            <option>Ana</option>
+            <option>Carlos</option>
+            <option>João</option>
+            <option>Marina</option>
+            <option>Will</option>
+        </select>
+
+        <label>Matéria</label>
+        <input type="text" id="materia" placeholder="Ex: HTML e CSS">
+
+        <button onclick="salvar()">Salvar</button>
+        <button onclick="fecharForm()">Cancelar</button>
+    </div>
+</div>
+
+<div class="painel">
+
+<h2>📚 Cursos</h2>
+<div class="cards">
+    <div class="card">Web Design</div>
+    <div class="card">Logística</div>
+    <div class="card">Contabilidade</div>
+    <div class="card">Administração</div>
+</div>
+
+<h2 style="margin-top:30px;">📌 Matérias do Mês</h2>
+<div class="lista" id="listaMaterias"></div>
+
+</div>
+
+<script>
+let date = new Date();
+let isTeacher = false;
+let selectedKey = null;
+
+let senha = prompt("Senha do professor:");
+if (senha === "1234") isTeacher = true;
+
+let dados = JSON.parse(localStorage.getItem("dados")) || {};
+
+function renderCalendar(){
+    let container = document.getElementById("calendarDays");
+    container.innerHTML="";
+
+    let year = date.getFullYear();
+    let month = date.getMonth();
+
+    document.getElementById("monthYear").innerText =
+    date.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+
+    let firstDay = new Date(year,month,1).getDay();
+    let total = new Date(year,month+1,0).getDate();
+
+    for(let i=0;i<firstDay;i++) container.innerHTML+="<div></div>";
+
+    for(let d=1;d<=total;d++){
+        let key = `${year}-${month}-${d}`;
+        let info = dados[key];
+
+        let div = document.createElement("div");
+        div.className="day";
+
+        // 🔥 MOSTRA SÓ SE FOR DO MÊS ATUAL
+        if(info) div.classList.add("has-event");
+
+        div.innerHTML = `<b>${d}</b><br>${info ? info.materia : ""}`;
+
+        div.onclick=()=>{
+            if(isTeacher){
+                selectedKey = key;
+                document.getElementById("modalForm").style.display="flex";
+            } else {
+                abrirModal(d, info);
+            }
+        };
+
+        container.appendChild(div);
+    }
+
+    atualizarLista();
+}
+
+function salvar(){
+    let curso = document.getElementById("curso").value;
+    let professor = document.getElementById("professor").value;
+    let materia = document.getElementById("materia").value;
+
+    if(materia){
+        dados[selectedKey] = {curso, professor, materia};
+    }
+
+    localStorage.setItem("dados", JSON.stringify(dados));
+    fecharForm();
+    renderCalendar();
+}
+
+function fecharForm(){
+    document.getElementById("modalForm").style.display="none";
+}
+
+function atualizarLista(){
+    let lista = document.getElementById("listaMaterias");
+    lista.innerHTML="";
+
+    let year = date.getFullYear();
+    let month = date.getMonth();
+
+    Object.entries(dados).forEach(([key, d])=>{
+        let [y, m] = key.split("-").map(Number);
+
+        // 🔥 FILTRO POR MÊS
+        if(y === year && m === month){
+            let div=document.createElement("div");
+            div.className="item";
+            div.innerText = `${d.materia} - ${d.curso} (${d.professor})`;
+            lista.appendChild(div);
+        }
+    });
+}
+
+function abrirModal(d, info){
+    document.getElementById("modal").style.display="flex";
+    document.getElementById("modalDate").innerText="Dia "+d;
+    document.getElementById("modalInfo").innerText =
+    info ? `${info.materia} - ${info.professor}` : "Sem matéria";
+}
+
+function fecharModal(){
+    document.getElementById("modal").style.display="none";
+}
+
+function prevMonth(){date.setMonth(date.getMonth()-1);renderCalendar();}
+function nextMonth(){date.setMonth(date.getMonth()+1);renderCalendar();}
+
+renderCalendar();
+</script>
+
+</body>
+</html>

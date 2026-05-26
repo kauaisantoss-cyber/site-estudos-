@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Avisos para Alunos</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body {
+    min-height:100vh;
+    background: linear-gradient(135deg, #662eb1, #000);
+    color:white;
+    background-attachment: fixed;
+}
+
+/* NAVBAR */
+.navbar {
+    background:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo {
+    font-size:22px;
+    font-weight:600;
+    color:#662eb1;
+}
+
+.nav-right {
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.user {
+    padding:8px 15px;
+    background:#662eb1;
+    border-radius:20px;
+    color:white;
+}
+
+/* 🔥 BOTÃO VOLTAR */
+.back-btn {
+    padding:8px 15px;
+    background:#4facfe;
+    color:white;
+    text-decoration:none;
+    border-radius:20px;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.back-btn:hover {
+    background:#007bff;
+}
+
+/* CONTAINER */
+.container {
+    max-width:800px;
+    margin:40px auto;
+}
+
+/* CARD */
+.card {
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* AVISOS */
+.aviso {
+    background:#f5f5ff;
+    padding:15px;
+    border-radius:10px;
+    margin-top:10px;
+    transition:.3s;
+}
+
+.aviso:hover {
+    transform:scale(1.02);
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo">📢 Avisos</div>
+
+    <div class="nav-right">
+        <!-- 🔙 BOTÃO -->
+        <a href="inicio.html" class="back-btn">⬅ Voltar</a>
+
+        <div class="user">🎓 Aluno</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h3>📌 Avisos Importantes</h3>
+        <div id="listaAvisos"></div>
+    </div>
+</div>
+
+<script>
+let avisos = JSON.parse(localStorage.getItem("avisos")) || [];
+
+function renderAvisos(){
+    let lista = document.getElementById("listaAvisos");
+    lista.innerHTML="";
+
+    if(avisos.length === 0){
+        lista.innerHTML = "<p>Sem avisos no momento</p>";
+        return;
+    }
+
+    avisos.slice().reverse().forEach(a=>{
+        let div = document.createElement("div");
+        div.className="aviso";
+
+        div.innerHTML = `
+            <strong>${a.data}</strong>
+            <p>${a.texto}</p>
+        `;
+
+        lista.appendChild(div);
+    });
+}
+
+renderAvisos();
+</script>
+
+</body>
+</html>
